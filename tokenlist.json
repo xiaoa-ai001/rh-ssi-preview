@@ -1,0 +1,31 @@
+{
+  "name": "ssi.fun RH List",
+  "timestamp": "2026-07-09T23:25:00.000Z",
+  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "logoURI": "https://rh.ssi.fun/logo.png",
+  "keywords": ["ssi.fun", "robinhood chain", "launchpad"],
+  "tags": {
+    "test": {
+      "name": "Test token",
+      "description": "Launched for pipeline verification, not a live sale"
+    }
+  },
+  "tokens": [
+    {
+      "chainId": 4663,
+      "address": "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18
+    },
+    {
+      "chainId": 4663,
+      "address": "0x88B69Cd3AAAe8ACd758dB8bdB3580B0Cf43E701F",
+      "name": "SSI Test Flight",
+      "symbol": "SSITEST",
+      "decimals": 18,
+      "logoURI": "https://rh.ssi.fun/logo.png",
+      "tags": ["test"]
+    }
+  ]
+}
