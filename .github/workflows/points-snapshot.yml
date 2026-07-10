@@ -1,0 +1,27 @@
+# Refresh /data/points.json every 30 min (points = on-chain-verifiable volume +
+# referral bonus; see scripts/points.mjs for the scoring rules).
+name: points-snapshot
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: points-snapshot
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/points.mjs
+      - name: commit if changed
+        run: |
+          git config user.name 'points-snapshot-bot'
+          git config user.email 'xiaoa-ai001@users.noreply.github.com'
+          git add data/points.json
+          git diff --cached --quiet && echo 'no change' && exit 0
+          git commit -m 'data: points snapshot'
+          git pull --rebase origin main
+          git push origin main
