@@ -1,0 +1,28 @@
+# Refresh /data/boards.json every ~10 min. Pages rebuilds on each commit;
+# the legacy branch build has a ~10 builds/hour soft limit, so keep the cron
+# at 10 min or slower.
+name: boards-snapshot
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: boards-snapshot
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/snapshot.mjs
+      - name: commit if changed
+        run: |
+          git config user.name 'boards-snapshot-bot'
+          git config user.email 'xiaoa-ai001@users.noreply.github.com'
+          git add data/boards.json
+          git diff --cached --quiet && echo 'no change' && exit 0
+          git commit -m 'data: boards snapshot'
+          git pull --rebase origin main
+          git push origin main
